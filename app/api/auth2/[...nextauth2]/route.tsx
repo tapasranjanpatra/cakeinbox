@@ -7,7 +7,6 @@ const authOptions={
             name:"credentials",
             credentials:{},
             async authorize(credentials){
-
             }
         })
     ]
