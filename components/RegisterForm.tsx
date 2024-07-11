@@ -48,8 +48,8 @@ export default function RegisterForm() {
         const form = e.target;
         form.reset();
 
-        setError(""); 
-        router.push("/auth")
+       
+        router.push("/auth2")
                       // Clear error on success
       } else {
         console.log("User registration failed.");
@@ -92,7 +92,7 @@ export default function RegisterForm() {
             </div>
           )}
 
-          <Link className="text-sm mt-3 text-right " href={"/auth"}>
+          <Link className="text-sm mt-3 text-right " href={"/auth2"}>
             Already have an account?<span className="underline">Login</span>
           </Link>
         </form>
