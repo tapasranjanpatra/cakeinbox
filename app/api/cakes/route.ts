@@ -14,4 +14,19 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// If you have other methods like GET, PUT, DELETE, you can define them similarly
+// this code for get the data to the database::
+
+export async function GET(_req: NextRequest) {
+  await connectMongoDB();
+
+  try {
+    const cakes = await Cake.find().exec();
+    return NextResponse.json({ success: true, data: cakes }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: (error as Error).message }, { status: 500 });
+  }
+}
+
+
+
+
