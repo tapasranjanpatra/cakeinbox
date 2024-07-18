@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Card from "./Card";
+import Modal from "./Modal"; // Import the Modal component
 
 const CakeList = () => {
   const [cakes, setCakes] = useState([]);
+  const [selectedCake, setSelectedCake] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +24,15 @@ const CakeList = () => {
 
     fetchData();
   }, []);
+
+  const handleCakeClick = (cake: any) => {
+    setSelectedCake(cake);
+  };
+
+  const closeModal = () => {
+    setSelectedCake(null);
+  };
+
   return (
     <div className="max-w-5xl mx-auto">
       <div className="flex mx-auto items-center justify-between px-2 my-8">
@@ -38,13 +49,15 @@ const CakeList = () => {
         </div>
       </div>
       <div className="flex flex-wrap items-center justify-between">
-      {cakes.map((cake, index) => (
-        <div>
-          <Card key={cake} cake={cake} />
-        </div>
-      ))}
+        {cakes.map((cake) => (
+          <div key={cake} onClick={() => handleCakeClick(cake)}>
+            <Card cake={cake} />
+          </div>
+        ))}
       </div>
-      <div className=""></div>
+      {selectedCake && <Modal cake={selectedCake} closeModal={closeModal} addToCart={function (): void {
+        throw new Error("Function not implemented.");
+      } } />}
     </div>
   );
 };

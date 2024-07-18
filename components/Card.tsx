@@ -40,7 +40,9 @@ import Image from "next/image";
 import React from "react";
 import { FaRupeeSign } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
+
 const Card = ({cake}) => {
+  
   return (
     <div className="border w-fit border-gray-400 rounded-2xl my-2">
       <div className="">
