@@ -1,12 +1,15 @@
+
+
 "use client";
 
 import { useEffect, useState } from "react";
 import Card from "./Card";
-import Modal from "./Modal"; // Import the Modal component
+import Modal from "./Modal";
+import { Cake } from "@/models/cake"; // Adjust according to your export
 
 const CakeList = () => {
-  const [cakes, setCakes] = useState([]);
-  const [selectedCake, setSelectedCake] = useState(null);
+  const [cakes, setCakes] = useState<Cake[]>([]);
+  const [selectedCake, setSelectedCake] = useState<Cake | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +19,7 @@ const CakeList = () => {
           throw new Error("Failed to fetch cakes");
         }
         const data = await response.json();
-        setCakes(data.data); // Assuming the API response structure { success: true, data: cakes }
+        setCakes(data.data);
       } catch (error) {
         console.error("Error fetching cakes:", error);
       }
@@ -25,12 +28,25 @@ const CakeList = () => {
     fetchData();
   }, []);
 
-  const handleCakeClick = (cake: any) => {
+  const handleCakeClick = (cake: Cake) => {
     setSelectedCake(cake);
   };
 
   const closeModal = () => {
     setSelectedCake(null);
+  };
+
+  const addToCart = (cake: Cake) => {
+    console.log("Adding to cart:", cake);
+  
+    // Retrieve the current cart from local storage
+    const existingCart = JSON.parse(localStorage.getItem('cartList') || '[]');
+  
+    // Add the new cake to the cart
+    const updatedCart = [...existingCart, cake];
+  
+    // Store the updated cart in local storage
+    localStorage.setItem('cartList', JSON.stringify(updatedCart));
   };
 
   return (
@@ -50,14 +66,18 @@ const CakeList = () => {
       </div>
       <div className="flex flex-wrap items-center justify-between">
         {cakes.map((cake) => (
-          <div key={cake} onClick={() => handleCakeClick(cake)}>
+          <div key={cake.id} onClick={() => handleCakeClick(cake)}>
             <Card cake={cake} />
           </div>
         ))}
       </div>
-      {selectedCake && <Modal cake={selectedCake} closeModal={closeModal} addToCart={function (): void {
-        throw new Error("Function not implemented.");
-      } } />}
+      {selectedCake && (
+        <Modal
+          cake={selectedCake}
+          closeModal={closeModal}
+          addToCart={addToCart}
+        />
+      )}
     </div>
   );
 };

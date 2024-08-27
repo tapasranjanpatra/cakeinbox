@@ -21,6 +21,7 @@ export default function LoginForm() {
         password,
         redirect: false,
       });
+      console.log(res);
 
       // Handle case where res might be undefined
       if (!res) {

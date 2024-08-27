@@ -8,10 +8,12 @@ export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading,setloading]=useState(false);
 
   const router=useRouter();
 
   const handleSubmit = async (e: any) => {
+    setloading(true);
     e.preventDefault(); // Fixed typo here
     if (!name || !email || !password) {
       setError("All fields are necessary.");
@@ -25,6 +27,10 @@ export default function RegisterForm() {
         },
         body: JSON.stringify({ email }),
       });
+      if(resUserExists.status===200){
+        setloading(false);
+      }
+      // console.log(resUserExists.status);s
 
       const { user } = await resUserExists.json();
       if (user) {
@@ -46,10 +52,9 @@ export default function RegisterForm() {
       });
       if (res.ok) {
         const form = e.target;
-        form.reset();
-
-       
+        form.reset();      
         router.push("/auth2")
+        setloading(false); 
                       // Clear error on success
       } else {
         console.log("User registration failed.");
@@ -83,7 +88,8 @@ export default function RegisterForm() {
             type="submit"
             className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2"
           >
-            Register
+            {loading===true ? "Loading..." : "Register"  }
+            
           </button>
 
           {error && (
